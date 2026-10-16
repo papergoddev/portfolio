@@ -1,533 +1,1944 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chivu Razvan Gabriel - Game Programmer</title>
-    
-    <!-- Fonts and Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS for Layout and Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        // Unreal Engine inspired color palette
-                        ue: {
-                            darkest: '#0c0c0c',
-                            dark: '#151515',
-                            panel: '#202020',
-                            border: '#303030',
-                            accent: '#00a8ff',
-                            accentGlow: '#00a8ff80',
-                            textMuted: '#9ca3af'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chivu Răzvan Gabriel | Game Developer & Framework Architect</title>
+  <meta name="description" content="Portfolio & CV of Chivu Răzvan Gabriel — Game Developer with 7 years of experience (5 in Unreal Engine, 2 in Unity), specializing in Game Framework Architecture, 3D Graphics & Shaders, and Systems Design." />
 
-    <style>
-        /* Base and Scrollbar */
-        body {
-            background-color: #151515;
-            color: #e5e7eb;
-            overflow-x: hidden;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0c0c0c;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #303030;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00a8ff;
-        }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-        /* Unreal Engine Panel Style */
-        .ue-panel {
-            background-color: rgba(32, 32, 32, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid #303030;
-            border-top: 2px solid #303030;
-            transition: all 0.3s ease;
-        }
-        .ue-panel:hover {
-            border-top: 2px solid #00a8ff;
-            box-shadow: 0 -4px 20px rgba(0, 168, 255, 0.15);
-        }
+  <style>
+    :root {
+      /* Unreal Engine 5 Inspired Color Palette */
+      --bg-base: #080a0f;
+      --bg-surface: #0f131c;
+      --bg-panel: rgba(20, 25, 36, 0.78);
+      --bg-panel-solid: #141924;
+      --bg-card-hover: #19202e;
 
-        /* Text Glitch / Glow Effect */
-        .glow-text {
-            text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
-        }
+      --ue-blue: #0078f2;
+      --ue-blue-bright: #26bbff;
+      --ue-blue-glow: rgba(0, 120, 242, 0.35);
+      --ue-cyan-glow: rgba(38, 187, 255, 0.18);
 
-        /* Scroll Reveal Animation Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      /* Node Pin Accent Colors */
+      --pin-exec: #ffffff;
+      --pin-struct: #0078f2;
+      --pin-shader: #00d2ff;
+      --pin-design: #10b981;
 
-        /* Background Canvas positioning */
-        #blueprint-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
 
-        /* Project Card Hover Animation */
-        .project-card {
-            position: relative;
-            overflow: hidden;
-        }
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at center, rgba(0, 168, 255, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-        .project-card:hover::before {
-            opacity: 1;
-        }
-        .project-card:hover .steam-btn {
-            background-color: #00a8ff;
-            color: #0c0c0c;
-            border-color: #00a8ff;
-        }
-        
-        /* Interactive Skill Badges */
-        .skill-badge {
-            transition: all 0.3s ease;
-            min-height: 140px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .skill-badge .detail-text {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin-top: 0;
-        }
-        .skill-badge:hover {
-            transform: translateY(-4px);
-            background-color: rgba(32, 32, 32, 0.95);
-            border-color: #00a8ff;
-            box-shadow: 0 10px 25px -5px rgba(0, 168, 255, 0.15);
-        }
-        .skill-badge:hover .detail-text {
-            max-height: 250px;
-            opacity: 1;
-            margin-top: 1.25rem;
-        }
-        .skill-badge i.icon-main {
-            transition: all 0.3s ease;
-        }
-        .skill-badge:hover i.icon-main {
-            color: #00a8ff;
-            transform: scale(1.1);
-        }
-    </style>
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(38, 187, 255, 0.45);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --transition-smooth: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+    }
+
+    /* Unreal Blueprint Grid & Interactive Spotlight Background */
+    .ue-grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-color: var(--bg-base);
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to right, rgba(0, 120, 242, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 120, 242, 0.045) 1px, transparent 1px);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+      mask-image: radial-gradient(ellipse 90% 80% at 50% 25%, #000 50%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 25%, #000 50%, transparent 100%);
+    }
+
+    .cursor-spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 120, 242, 0.11) 0%, rgba(38, 187, 255, 0.04) 35%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 120, 242, 0.3);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--ue-blue);
+    }
+
+    /* Typography & Layout Utilities */
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      padding: 6.5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ue-blue-bright);
+      background: rgba(0, 120, 242, 0.1);
+      border: 1px solid rgba(0, 120, 242, 0.28);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .section-tag::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ue-blue-bright);
+      box-shadow: 0 0 8px var(--ue-blue-bright);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.15;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin-top: 0.75rem;
+    }
+
+    /* Navigation Bar (Unreal Editor Top-Bar Feel) */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(8, 10, 15, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--ue-blue), #004494);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      box-shadow: 0 0 18px var(--ue-blue-glow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .brand-meta span:last-child {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ue-blue-bright);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ue-blue);
+      color: #fff !important;
+      font-weight: 600;
+      padding: 0.55rem 1.1rem !important;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px var(--ue-blue-glow);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-cta:hover {
+      background: #0d84ff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0, 120, 242, 0.5);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       1) HERO / ABOUT SECTION
+       ========================================== */
+    .hero {
+      padding-top: 9.5rem;
+      padding-bottom: 5.5rem;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 0.95rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #34d399;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(1.2); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.2vw, 4.1rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(90deg, #ffffff 0%, var(--ue-blue-bright) 55%, var(--ue-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      color: var(--ue-blue-bright);
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .hero-bio {
+      color: var(--text-secondary);
+      font-size: 1.06rem;
+      line-height: 1.75;
+      margin-bottom: 2.2rem;
+      max-width: 620px;
+    }
+
+    .hero-bio strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--ue-blue), #005ec2);
+      color: #fff;
+      box-shadow: 0 8px 25px var(--ue-blue-glow);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 120, 242, 0.55);
+      background: linear-gradient(135deg, #1284ff, var(--ue-blue));
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--ue-blue-bright);
+      transform: translateY(-2px);
+    }
+
+    /* Experience Breakdown Cards (7 Years: 5 UE + 2 Unity) */
+    .exp-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .exp-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .exp-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--ue-blue), var(--ue-blue-bright));
+      opacity: 0.7;
+    }
+
+    .exp-box:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .exp-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+    }
+
+    .exp-num span {
+      color: var(--ue-blue-bright);
+      font-size: 1.25rem;
+    }
+
+    .exp-label {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
+    /* Right Column: Unreal Inspector / Blueprint Node Card */
+    .inspector-card {
+      background: var(--bg-panel);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 120, 242, 0.12);
+      backdrop-filter: blur(18px);
+    }
+
+    .inspector-header {
+      background: linear-gradient(90deg, #161d2b 0%, #0f141e 100%);
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .inspector-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .inspector-title svg {
+      color: var(--ue-blue-bright);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .window-dots span:first-child { background: #ef4444; }
+    .window-dots span:nth-child(2) { background: #f59e0b; }
+    .window-dots span:last-child { background: #10b981; }
+
+    .inspector-body {
+      padding: 1.5rem;
+    }
+
+    .prop-row {
+      margin-bottom: 1.35rem;
+    }
+
+    .prop-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .prop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .prop-name {
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pin-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .prop-val {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--ue-blue), var(--ue-blue-bright));
+      box-shadow: 0 0 12px var(--ue-blue-glow);
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .progress-fill.unity {
+      background: linear-gradient(90deg, #64748b, #cbd5e1);
+      box-shadow: none;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+    }
+
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .tech-tag.highlight {
+      background: rgba(0, 120, 242, 0.14);
+      border-color: rgba(0, 120, 242, 0.4);
+      color: var(--ue-blue-bright);
+    }
+
+    /* ==========================================
+       2) PROJECTS CAROUSEL SECTION (4 STEAM GAMES)
+       ========================================== */
+    .carousel-wrapper {
+      position: relative;
+      background: var(--bg-panel);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .carousel-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.5rem;
+      background: rgba(10, 13, 20, 0.85);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .carousel-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .carousel-tab {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .carousel-tab:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .carousel-tab.active {
+      background: rgba(0, 120, 242, 0.18);
+      border-color: var(--ue-blue-bright);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0, 120, 242, 0.25);
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .carousel-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .carousel-btn:hover {
+      background: var(--ue-blue);
+      border-color: var(--ue-blue-bright);
+      transform: translateY(-1px);
+    }
+
+    .carousel-viewport {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .game-media {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0b0e14;
+      aspect-ratio: 460 / 215;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      group: hover;
+    }
+
+    .game-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .game-media:hover img {
+      transform: scale(1.04);
+    }
+
+    .steam-badge-overlay {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(8, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--ue-blue-bright);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .game-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .game-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .game-genre-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      background: rgba(0, 120, 242, 0.14);
+      color: var(--ue-blue-bright);
+      border: 1px solid rgba(0, 120, 242, 0.3);
+    }
+
+    .game-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.85rem;
+      line-height: 1.15;
+    }
+
+    .game-desc {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .game-highlights {
+      list-style: none;
+      margin-bottom: 1.65rem;
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .game-highlights li {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .game-highlights li::before {
+      content: "▹";
+      color: var(--ue-blue-bright);
+      font-family: var(--font-mono);
+      font-weight: bold;
+    }
+
+    .game-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .carousel-progress-bar {
+      height: 3px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .carousel-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ue-blue), var(--ue-blue-bright));
+      width: 25%;
+      transition: width 0.4s ease;
+    }
+
+    /* ==========================================
+       3) CAPABILITIES / SPECIALIZATIONS SECTION
+       ========================================== */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .cap-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 2.1rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cap-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--cap-accent, var(--ue-blue));
+      opacity: 0.85;
+    }
+
+    .cap-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-highlight);
+      background: var(--bg-card-hover);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 120, 242, 0.12);
+    }
+
+    .cap-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(0, 120, 242, 0.12);
+      border: 1px solid rgba(0, 120, 242, 0.3);
+      display: grid;
+      place-items: center;
+      color: var(--ue-blue-bright);
+      margin-bottom: 1.5rem;
+    }
+
+    .cap-node-id {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .cap-title {
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.9rem;
+      line-height: 1.25;
+    }
+
+    .cap-text {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .cap-specs {
+      list-style: none;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.15rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .cap-specs li {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .cap-specs li span.pin {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cap-accent, var(--ue-blue-bright));
+      box-shadow: 0 0 6px var(--cap-accent, var(--ue-blue-bright));
+    }
+
+    /* ==========================================
+       4) CONTACT & 5) SOCIALS SECTIONS
+       ========================================== */
+    .contact-socials-wrapper {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .panel-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 2.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contact-cards {
+      display: grid;
+      gap: 1.1rem;
+      margin-top: 1.75rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.15rem 1.35rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: var(--transition-smooth);
+      flex-wrap: wrap;
+    }
+
+    .contact-item:hover {
+      border-color: var(--ue-blue-bright);
+      background: rgba(0, 120, 242, 0.06);
+    }
+
+    .contact-item-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(0, 120, 242, 0.14);
+      border: 1px solid rgba(0, 120, 242, 0.3);
+      display: grid;
+      place-items: center;
+      color: var(--ue-blue-bright);
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .contact-value {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .contact-value:hover {
+      color: var(--ue-blue-bright);
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .copy-btn:hover {
+      background: var(--ue-blue);
+      color: #fff;
+      border-color: var(--ue-blue-bright);
+    }
+
+    /* Social Channels List */
+    .socials-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.75rem;
+    }
+
+    .social-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.15rem 1.35rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: var(--transition-smooth);
+    }
+
+    .social-card:hover {
+      transform: translateX(6px);
+      border-color: var(--ue-blue-bright);
+      background: rgba(0, 120, 242, 0.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .social-card-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition-smooth);
+    }
+
+    .social-card:hover .social-icon {
+      background: var(--ue-blue);
+      border-color: var(--ue-blue-bright);
+      color: #fff;
+    }
+
+    .social-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .social-handle {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 2.5rem 0;
+      background: rgba(6, 8, 12, 0.9);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #141b29;
+      border: 1px solid var(--ue-blue-bright);
+      color: var(--text-primary);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition-smooth);
+      z-index: 999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .hero-grid,
+      .carousel-slide,
+      .capabilities-grid,
+      .contact-socials-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 7.5rem;
+      }
+
+      .carousel-slide {
+        padding: 1.5rem;
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #0c1018;
+        flex-direction: column;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .exp-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased selection:bg-ue-accent selection:text-ue-darkest">
+<body>
 
-    <!-- Interactive Blueprint/Node Background -->
-    <canvas id="blueprint-canvas"></canvas>
+  <!-- Background Blueprint Grid & Dynamic Cursor Spotlight -->
+  <div class="ue-grid-bg"></div>
+  <div class="cursor-spotlight" id="spotlight"></div>
 
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
-        <div class="absolute inset-0 bg-ue-darkest/90 backdrop-blur-md border-b border-ue-border shadow-lg"></div>
-        <div class="max-w-7xl mx-auto px-6 py-4 relative flex justify-between items-center">
-            <div class="font-bold text-xl tracking-wider text-white">
-                <span class="text-ue-accent font-mono">&gt;</span> CHIVU_R
+  <!-- Top Navigation -->
+  <header>
+    <div class="container nav-inner">
+      <a href="#about" class="brand">
+        <div class="brand-badge">CR</div>
+        <div class="brand-meta">
+          <span>Chivu Răzvan Gabriel</span>
+          <span>UE5 // GAME ARCHITECT</span>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" class="active">01. About</a></li>
+        <li><a href="#projects">02. Steam Projects</a></li>
+        <li><a href="#capabilities">03. Capabilities</a></li>
+        <li><a href="#contact">04. Contact</a></li>
+        <li><a href="#socials">05. Socials</a></li>
+        <li><a href="#contact" class="nav-cta">Hire / Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       1) ABOUT ME / HERO SECTION
+       ========================================== -->
+  <section id="about" class="hero">
+    <div class="container hero-grid">
+      <div class="reveal visible">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          AVAILABLE FOR GAME DEV & ENGINEERING ROLES
+        </div>
+
+        <h1 class="hero-title">
+          Chivu Răzvan <span class="gradient-text">Gabriel</span>
+        </h1>
+
+        <div class="hero-role">
+          <span>Game Framework Architect</span>
+          <span>•</span>
+          <span>3D Graphics & Shaders</span>
+          <span>•</span>
+          <span>Systems Designer</span>
+        </div>
+
+        <p class="hero-bio">
+          I build gameplay systems from the ground up and ship complete games on Steam. Over the past <strong>7 years</strong>—spending <strong>5 years deep in Unreal Engine</strong> and <strong>2 years in Unity</strong>—I've focused on writing clean, modular framework architectures that don't fall apart when a project scales. Whether I'm structuring multiplayer replication, writing custom HLSL/material shaders, or balancing progression curves, I care about how the code runs and how the game actually feels in the player's hands.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">
+            <span>Explore Shipped Titles</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#contact" class="btn btn-secondary">
+            <span>Get In Touch</span>
+          </a>
+          <button onclick="window.print()" class="btn btn-secondary" title="Print or Save as PDF CV">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/>
+            </svg>
+            <span>Save CV</span>
+          </button>
+        </div>
+
+        <!-- Experience Metrics -->
+        <div class="exp-strip">
+          <div class="exp-box">
+            <div class="exp-num">7<span>YRS</span></div>
+            <div class="exp-label">Total Game Dev Experience</div>
+          </div>
+          <div class="exp-box">
+            <div class="exp-num">5<span>YRS</span></div>
+            <div class="exp-label">Unreal Engine (C++ & BP)</div>
+          </div>
+          <div class="exp-box">
+            <div class="exp-num">2<span>YRS</span></div>
+            <div class="exp-label">Unity Engine (C#)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unreal Engine Details Inspector Panel -->
+      <div class="inspector-card reveal">
+        <div class="inspector-header">
+          <div class="inspector-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+            <span>BP_DeveloperProfile // Details</span>
+          </div>
+          <div class="window-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="prop-row">
+            <div class="prop-header">
+              <span class="prop-name"><i class="pin-dot" style="background: var(--pin-struct)"></i> Primary Engine: Unreal Engine 5</span>
+              <span class="prop-val">5 Years</span>
             </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-wide">
-                <a href="#about" class="text-gray-400 hover:text-ue-accent transition-colors">EXPERIENCE</a>
-                <a href="#skills" class="text-gray-400 hover:text-ue-accent transition-colors">SKILLS</a>
-                <a href="#projects" class="text-gray-400 hover:text-ue-accent transition-colors">PROJECTS</a>
-                <a href="#contact" class="text-gray-400 hover:text-ue-accent transition-colors">CONTACT</a>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 92%"></div>
             </div>
-            <a href="#projects" class="hidden md:inline-block border border-ue-accent text-ue-accent px-4 py-2 text-sm font-bold hover:bg-ue-accent hover:text-ue-dark transition-all rounded-sm">
-                View Games
+          </div>
+
+          <div class="prop-row">
+            <div class="prop-header">
+              <span class="prop-name"><i class="pin-dot" style="background: #cbd5e1"></i> Secondary Engine: Unity 3D</span>
+              <span class="prop-val">2 Years</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill unity" style="width: 65%"></div>
+            </div>
+          </div>
+
+          <div class="prop-row">
+            <div class="prop-header">
+              <span class="prop-name"><i class="pin-dot" style="background: var(--pin-design)"></i> Commercial Steam Titles</span>
+              <span class="prop-val">4 Games</span>
+            </div>
+            <div class="tech-tags">
+              <span class="tech-tag highlight">Rejuvan</span>
+              <span class="tech-tag highlight">The Backwars</span>
+              <span class="tech-tag highlight">Wait, is THAT me?</span>
+              <span class="tech-tag highlight">Down to Floor Zero</span>
+            </div>
+          </div>
+
+          <div class="prop-row">
+            <div class="prop-header">
+              <span class="prop-name"><i class="pin-dot" style="background: var(--pin-shader)"></i> Core Technical Stack</span>
+              <span class="prop-val">Production Ready</span>
+            </div>
+            <div class="tech-tags">
+              <span class="tech-tag">Unreal C++</span>
+              <span class="tech-tag">Blueprints</span>
+              <span class="tech-tag">Gameplay Frameworks</span>
+              <span class="tech-tag">Multiplayer / Co-op</span>
+              <span class="tech-tag">HLSL & Shaders</span>
+              <span class="tech-tag">3D Modeling</span>
+              <span class="tech-tag">Unity C#</span>
+              <span class="tech-tag">Systems Balancing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       2) PROJECTS SECTION (STEAM CAROUSEL)
+       ========================================== -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">02 // Shipped & Active Titles</div>
+        <h2 class="section-title">Steam Projects Showcase</h2>
+        <p class="section-subtitle">
+          Four commercial titles published and developed under the <strong>Papergod</strong> banner—spanning factory automation, time-looping roguelike shooters, and systemic survival horror.
+        </p>
+      </div>
+
+      <div class="carousel-wrapper reveal" id="projectCarousel">
+        <!-- Top Bar with Quick Selector Tabs & Prev/Next Controls -->
+        <div class="carousel-topbar">
+          <div class="carousel-tabs" id="carouselTabs">
+            <button class="carousel-tab active" data-index="0">01. Wait, is THAT me?</button>
+            <button class="carousel-tab" data-index="1">02. Down to Floor Zero</button>
+            <button class="carousel-tab" data-index="2">03. The Backwars</button>
+            <button class="carousel-tab" data-index="3">04. Rejuvan</button>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="prevBtn" aria-label="Previous Project">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <button class="carousel-btn" id="nextBtn" aria-label="Next Project">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Slides Viewport -->
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="carouselTrack">
+
+            <!-- SLIDE 1: Wait, is THAT me? -->
+            <article class="carousel-slide">
+              <div class="game-media">
+                <img
+                  src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4002570/header.jpg"
+                  alt="Wait, is THAT me? Steam Header"
+                  onerror="this.src='https://cdn.akamai.steamstatic.com/steam/apps/4002570/header.jpg'"
+                />
+                <div class="steam-badge-overlay">
+                  <span>STEAM APP // 4002570</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <div class="game-meta-row">
+                  <span class="game-genre-pill">Action Roguelike FPS</span>
+                  <span class="game-genre-pill">Co-op & PvP</span>
+                  <span class="game-genre-pill">Time-Loop Mechanics</span>
+                </div>
+                <h3 class="game-title">Wait, is THAT me?</h3>
+                <p class="game-desc">
+                  A fast-paced arena roguelike shooter where your past is literally looped against you. Every movement, shot, upgrade, and even what you say over proximity voice chat is recorded and reenacted by lethal replicas of yourself in subsequent waves.
+                </p>
+                <ul class="game-highlights">
+                  <li>Built a deterministic action & voice-recording replay architecture for past-self clones.</li>
+                  <li>Designed and balanced 100+ stackable upgrades that dynamically transfer to future clones.</li>
+                  <li>Engineered online Co-op and Versus multiplayer modes with proximity voice mimicry.</li>
+                </ul>
+                <div class="game-actions">
+                  <a href="https://store.steampowered.com/app/4002570/Wait_is_THAT_me/" target="_blank" rel="noopener" class="btn btn-primary">
+                    <span>View on Steam</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- SLIDE 2: Down to Floor Zero -->
+            <article class="carousel-slide">
+              <div class="game-media">
+                <img
+                  src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5176520/header.jpg"
+                  alt="Down to Floor Zero Steam Header"
+                  onerror="this.src='https://cdn.akamai.steamstatic.com/steam/apps/5176520/header.jpg'"
+                />
+                <div class="steam-badge-overlay">
+                  <span>STEAM APP // 5176520</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <div class="game-meta-row">
+                  <span class="game-genre-pill">Survival Horror</span>
+                  <span class="game-genre-pill">Atmospheric 3D</span>
+                  <span class="game-genre-pill">Procedural Tension</span>
+                </div>
+                <h3 class="game-title">Down to Floor Zero</h3>
+                <p class="game-desc">
+                  A claustrophobic survival horror experience set inside an impossibly vast hotel where your only lifeline is an elevator that exclusively travels downward. Each floor introduces shifting architectural hazards, scarce resources, and relentless tension.
+                </p>
+                <ul class="game-highlights">
+                  <li>Architected seamless floor streaming and elevator state transitions with zero loading breaks.</li>
+                  <li>Crafted custom post-processing shaders, volumetric lighting, and diegetic UI systems.</li>
+                  <li>Tuned resource scarcity, acoustic threat cues, and encounter pacing for sustained tension.</li>
+                </ul>
+                <div class="game-actions">
+                  <a href="https://store.steampowered.com/app/5176520/Down_to_Floor_Zero/" target="_blank" rel="noopener" class="btn btn-primary">
+                    <span>View on Steam</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- SLIDE 3: The Backwars -->
+            <article class="carousel-slide">
+              <div class="game-media">
+                <img
+                  src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3172470/header.jpg"
+                  alt="The Backwars Steam Header"
+                  onerror="this.src='https://cdn.akamai.steamstatic.com/steam/apps/3172470/header.jpg'"
+                />
+                <div class="steam-badge-overlay">
+                  <span>STEAM APP // 3172470</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <div class="game-meta-row">
+                  <span class="game-genre-pill">Multiplayer Survival Horror</span>
+                  <span class="game-genre-pill">Systemic Sandbox</span>
+                  <span class="game-genre-pill">Solo / Co-op / PvP</span>
+                </div>
+                <h3 class="game-title">The Backwars</h3>
+                <p class="game-desc">
+                  An unforgiving survival horror sandbox where every item, object, and environmental system can interact. Scavenge for food and water, craft makeshift defenses, and survive lurking entities—or rival players—across Solo, Co-op, and Versus modes.
+                </p>
+                <ul class="game-highlights">
+                  <li>Developed a modular object-interaction framework where items dynamically affect world state.</li>
+                  <li>Implemented networked inventory, crafting, and survival metabolism systems (LAN & Online).</li>
+                  <li>Created gritty realistic lighting, custom surface materials, and spatial audio feedback.</li>
+                </ul>
+                <div class="game-actions">
+                  <a href="https://store.steampowered.com/app/3172470/The_Backwars/" target="_blank" rel="noopener" class="btn btn-primary">
+                    <span>View on Steam</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- SLIDE 4: Rejuvan -->
+            <article class="carousel-slide">
+              <div class="game-media">
+                <img
+                  src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2814370/header.jpg"
+                  alt="Rejuvan Steam Header"
+                  onerror="this.src='https://cdn.akamai.steamstatic.com/steam/apps/2814370/header.jpg'"
+                />
+                <div class="steam-badge-overlay">
+                  <span>STEAM APP // 2814370</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <div class="game-meta-row">
+                  <span class="game-genre-pill">Factory Automation</span>
+                  <span class="game-genre-pill">First-Person Strategy</span>
+                  <span class="game-genre-pill">Simulation</span>
+                </div>
+                <h3 class="game-title">Rejuvan</h3>
+                <p class="game-desc">
+                  A first-person factory building and optimization game set on an isolated island with unexpected narrative twists. Players engineer high-efficiency production lines using specialized droppers, modular conveyors, and furnaces, sacrificing progress in prestige "Rejuvenation" cycles.
+                </p>
+                <ul class="game-highlights">
+                  <li>Engineered a high-performance grid placement and conveyor item-routing framework.</li>
+                  <li>Balanced complex exponential economy multipliers, ore upgraders, and prestige loops.</li>
+                  <li>Designed world events that dynamically alter gameplay at specific profit thresholds.</li>
+                </ul>
+                <div class="game-actions">
+                  <a href="https://store.steampowered.com/app/2814370/Rejuvan/" target="_blank" rel="noopener" class="btn btn-primary">
+                    <span>View on Steam</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Bottom Progress Indicator -->
+        <div class="carousel-progress-bar">
+          <div class="carousel-progress-fill" id="carouselProgress"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       3) CORE CAPABILITIES SECTION
+       ========================================== -->
+  <section id="capabilities">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">03 // Technical & Creative Pillars</div>
+        <h2 class="section-title">Core Capabilities</h2>
+        <p class="section-subtitle">
+          Combining low-level framework engineering with technical art and hands-on systems design to take features from raw prototype to shipping build.
+        </p>
+      </div>
+
+      <div class="capabilities-grid">
+        <!-- Pillar 1: Game Framework Architecture -->
+        <div class="cap-card reveal" style="--cap-accent: #0078f2;">
+          <div>
+            <div class="cap-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <div class="cap-node-id">NODE_01 // ARCHITECTURE</div>
+            <h3 class="cap-title">Game Framework Architecture Specialist</h3>
+            <p class="cap-text">
+              I design decoupled, modular gameplay frameworks in Unreal Engine (C++ & Blueprints) and Unity. Instead of hardcoding one-off scripts, I build extensible core systems—interaction pipelines, state machines, inventory/save serialization, and multiplayer replication—that remain clean and maintainable throughout production.
+            </p>
+          </div>
+          <ul class="cap-specs">
+            <li><span class="pin"></span> Modular C++ & Blueprint Subsystems</li>
+            <li><span class="pin"></span> Data-Driven Gameplay Architecture</li>
+            <li><span class="pin"></span> Multiplayer & Co-op Replication</li>
+            <li><span class="pin"></span> Memory & Frame-Time Profiling</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2: 3D Graphics, Shaders & Modeling -->
+        <div class="cap-card reveal" style="--cap-accent: #00d2ff;">
+          <div>
+            <div class="cap-icon-wrap" style="color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); background: rgba(0, 210, 255, 0.1);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <div class="cap-node-id">NODE_02 // 3D GRAPHICS & TECH ART</div>
+            <h3 class="cap-title">3D Graphics, Shaders & 3D Modeling</h3>
+            <p class="cap-text">
+              Experienced across the entire 3D visual pipeline. I create custom surface and post-process shaders, complex Unreal Material graphs, and procedural visual effects, backed by practical 3D modeling, UV unwrapping, and LOD optimization so environments look sharp without tanking GPU performance.
+            </p>
+          </div>
+          <ul class="cap-specs">
+            <li><span class="pin"></span> Custom Shaders & UE Material Graphs</li>
+            <li><span class="pin"></span> Post-Processing & Atmospheric Lighting</li>
+            <li><span class="pin"></span> 3D Hard-Surface & Environment Modeling</li>
+            <li><span class="pin"></span> Draw-Call & Shader Complexity Optimization</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3: Game Design & Gameplay Balancing -->
+        <div class="cap-card reveal" style="--cap-accent: #10b981;">
+          <div>
+            <div class="cap-icon-wrap" style="color: #34d399; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.1);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20V10"/>
+                <path d="M18 20V4"/>
+                <path d="M6 20v-4"/>
+              </svg>
+            </div>
+            <div class="cap-node-id">NODE_03 // SYSTEMS DESIGN</div>
+            <h3 class="cap-title">Game Designer & Gameplay Balancing</h3>
+            <p class="cap-text">
+              A great codebase means nothing if the core loop isn't rewarding. I specialize in designing, prototyping, and mathematically balancing interconnected gameplay mechanics—from roguelike upgrade synergies and combat pacing to factory economy curves and survival resource scarcity.
+            </p>
+          </div>
+          <ul class="cap-specs">
+            <li><span class="pin"></span> Core Combat & Movement Feel ("Game Feel")</li>
+            <li><span class="pin"></span> Economy, Progression & Loot Math</li>
+            <li><span class="pin"></span> Systemic & Emergent Gameplay Loops</li>
+            <li><span class="pin"></span> Playtesting Iteration & Telemetry Tuning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       4) CONTACT & 5) SOCIALS SECTION
+       ========================================== -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">04 & 05 // Direct Channels</div>
+        <h2 class="section-title">Contact & Social Networks</h2>
+        <p class="section-subtitle">
+          Looking for an experienced Unreal Engine / Unity developer or framework architect for your studio or project? Reach out directly below.
+        </p>
+      </div>
+
+      <div class="contact-socials-wrapper">
+        <!-- 4) Direct Contact Info -->
+        <div class="panel-box reveal">
+          <div>
+            <div class="cap-node-id">04 // DIRECT CONTACT</div>
+            <h3 class="cap-title" style="margin-bottom: 0.4rem;">Let's Build Something Solid</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">
+              Available for full-time roles, contract engineering, and technical consultation. Click to call, email, or copy my details to your clipboard.
+            </p>
+
+            <div class="contact-cards">
+              <!-- Email -->
+              <div class="contact-item">
+                <div class="contact-item-left">
+                  <div class="contact-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="contact-label">Email Address</div>
+                    <a href="mailto:papergod.dev@gmail.com" class="contact-value">papergod.dev@gmail.com</a>
+                  </div>
+                </div>
+                <button class="copy-btn" onclick="copyText('papergod.dev@gmail.com', 'Email copied to clipboard!')">
+                  Copy Email
+                </button>
+              </div>
+
+              <!-- Phone -->
+              <div class="contact-item">
+                <div class="contact-item-left">
+                  <div class="contact-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="contact-label">Phone Number</div>
+                    <a href="tel:+40742365153" class="contact-value">+40 742 365 153</a>
+                  </div>
+                </div>
+                <button class="copy-btn" onclick="copyText('+40742365153', 'Phone number copied!')">
+                  Copy Phone
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">
+              LOCATION: BUCHAREST, ROMANIA (REMOTE / HYBRID / ON-SITE)
+            </span>
+            <a href="mailto:papergod.dev@gmail.com?subject=Game%20Developer%20Opportunity%20-%20Chivu%20Razvan%20Gabriel" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.86rem;">
+              Send Direct Email →
             </a>
+          </div>
         </div>
-    </nav>
 
-    <header class="min-h-screen flex items-center justify-center relative pt-20 px-6">
-        <div class="max-w-4xl w-full text-center sm:text-left flex flex-col items-center sm:items-start z-10">
-            <p class="text-ue-accent font-mono text-sm sm:text-base mb-4 reveal">System.Init() // Welcome</p>
-            <h1 class="text-5xl sm:text-7xl font-extrabold text-white mb-2 tracking-tight reveal" style="transition-delay: 100ms;">
-                Chivu Razvan <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Gabriel</span>
-            </h1>
-            <h2 class="text-2xl sm:text-4xl font-light text-gray-400 mb-8 glow-text reveal" style="transition-delay: 200ms;">
-                Game Programmer
-            </h2>
-            
-            <div class="flex flex-col sm:flex-row items-center gap-6 mb-12 reveal" style="transition-delay: 300ms;">
-                <div class="ue-panel px-6 py-4 rounded-md text-center sm:text-left flex-1 min-w-[200px]">
-                    <div class="text-3xl font-black text-ue-accent mb-1">7 YRS</div>
-                    <div class="text-xs text-ue-textMuted uppercase tracking-widest font-semibold">Total Experience</div>
+        <!-- 5) Social Media Links -->
+        <div class="panel-box reveal" id="socials">
+          <div>
+            <div class="cap-node-id">05 // SOCIALS & DEVLOGS</div>
+            <h3 class="cap-title" style="margin-bottom: 0.4rem;">Follow My Work</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">
+              Behind-the-scenes shader experiments, devlogs, gameplay trailers, and updates from my Steam releases.
+            </p>
+
+            <div class="socials-list">
+              <!-- YouTube -->
+              <a href="https://www.youtube.com/@papergoddev" target="_blank" rel="noopener" class="social-card">
+                <div class="social-card-left">
+                  <div class="social-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="social-name">YouTube</div>
+                    <div class="social-handle">@papergoddev • Trailers & Devlogs</div>
+                  </div>
                 </div>
-                <div class="flex flex-row gap-4 flex-1">
-                    <div class="ue-panel px-4 py-3 rounded-md text-center w-full">
-                        <div class="text-xl font-bold text-white"><i class="fa-brands fa-unity mr-2"></i>2</div>
-                        <div class="text-[10px] text-gray-500 uppercase mt-1">Unity</div>
-                    </div>
-                    <div class="ue-panel px-4 py-3 rounded-md text-center w-full relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-ue-accent/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
-                        <div class="text-xl font-bold text-white relative z-10 flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.62 16.5c-.48.53-1.12.8-1.92.8-.8 0-1.44-.27-1.92-.8-.48-.53-.73-1.22-.73-2.02v-3.79c0-.5-.13-.88-.38-1.13-.26-.26-.62-.39-1.04-.39-.43 0-.79.13-1.04.39-.25.25-.38.63-.38 1.13v3.79c0 .8-.25 1.5-.73 2.02-.48.53-1.12.8-1.92.8-.8 0-1.44-.27-1.92-.8-.48-.53-.73-1.22-.73-2.02V8.16h2.64v6.42c0 .28.05.5.14.63.09.13.24.2.42.2.19 0 .34-.07.43-.2.09-.13.14-.35.14-.63V8.16h2.64v2.1c.4-.75.85-1.3 1.34-1.63.5-.33 1.05-.5 1.63-.5.99 0 1.75.29 2.25.86.5.57.76 1.39.76 2.4v3.25c0 .8-.25 1.49-.73 2.02z"/>
-                            </svg>
-                            5
-                        </div>
-                        <div class="text-[10px] text-gray-500 uppercase mt-1 relative z-10">Unreal Engine</div>
-                    </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M7 7h10v10"/>
+                </svg>
+              </a>
+
+              <!-- TikTok -->
+              <a href="https://www.tiktok.com/@papergoddev" target="_blank" rel="noopener" class="social-card">
+                <div class="social-card-left">
+                  <div class="social-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="social-name">TikTok</div>
+                    <div class="social-handle">@papergoddev • Short Clips & Mechanics</div>
+                  </div>
                 </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M7 7h10v10"/>
+                </svg>
+              </a>
+
+              <!-- Instagram -->
+              <a href="https://www.instagram.com/papergoddev" target="_blank" rel="noopener" class="social-card">
+                <div class="social-card-left">
+                  <div class="social-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="social-name">Instagram</div>
+                    <div class="social-handle">@papergoddev • Visuals & Updates</div>
+                  </div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M7 7h10v10"/>
+                </svg>
+              </a>
             </div>
-            
-            <a href="#projects" class="reveal inline-flex items-center gap-3 bg-white text-ue-darkest px-8 py-4 font-bold rounded-sm hover:bg-ue-accent transition-colors group" style="transition-delay: 400ms;">
-                <span>Explore Projects</span>
-                <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
-            </a>
+          </div>
+
+          <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">
+            STUDIO HANDLE // PAPERGOD
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+  </section>
 
-    <section id="skills" class="py-24 bg-ue-darkest/50 border-y border-ue-border relative">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex items-center gap-4 mb-12 reveal">
-                <div class="w-12 h-[2px] bg-ue-accent"></div>
-                <h2 class="text-3xl font-bold text-white tracking-wide">CORE CAPABILITIES</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 reveal">
-                <!-- Skill 1 -->
-                <div class="ue-panel skill-badge p-8 rounded-md text-center cursor-default border-t-ue-accent">
-                    <i class="fa-solid fa-layer-group text-4xl text-gray-400 icon-main mb-4"></i>
-                    <h3 class="font-bold text-xl text-white">Game Framework & Architecture</h3>
-                    <p class="detail-text leading-relaxed text-left sm:text-center">
-                        Specializare avansată în dezvoltarea de arhitecturi robuste și scalabile pentru jocuri 3D. Experiență profundă cu Unreal Engine Game Framework, crearea de subsisteme customizate, integrarea Gameplay Ability System (GAS) și design modular folosind C++.
-                    </p>
-                </div>
-                <!-- Skill 2 -->
-                <div class="ue-panel skill-badge p-8 rounded-md text-center cursor-default">
-                    <i class="fa-solid fa-network-wired text-4xl text-gray-400 icon-main mb-4"></i>
-                    <h3 class="font-bold text-xl text-white">AI & Systems Programming</h3>
-                    <p class="detail-text leading-relaxed text-left sm:text-center">
-                        Implementarea comportamentelor complexe prin Behavior Trees, sisteme de generare procedurală (PCG) și programare la nivel de sistem. Dezvoltare de mecanici de joc optimizate și sigure.
-                    </p>
-                </div>
-                <!-- Skill 3 -->
-                <div class="ue-panel skill-badge p-8 rounded-md text-center cursor-default">
-                    <i class="fa-solid fa-microchip text-4xl text-gray-400 icon-main mb-4"></i>
-                    <h3 class="font-bold text-xl text-white">Low-Level & Performance</h3>
-                    <p class="detail-text leading-relaxed text-left sm:text-center">
-                        Managementul memoriei, multi-threading și optimizarea performanței. Experiență în dezvoltarea de motoare voxel customizate în C++/OpenGL, arhitectura memoriei și randare avansată (Niagara).
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        © <span id="year"></span> <strong>Chivu Răzvan Gabriel</strong>. Built with an Unreal Engine-inspired architecture.
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--ue-blue-bright);">
+        5 YRS UNREAL ENGINE • 2 YRS UNITY • 4 STEAM TITLES
+      </div>
+    </div>
+  </footer>
 
-    <section id="projects" class="py-32 relative">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex items-center gap-4 mb-16 reveal">
-                <div class="w-12 h-[2px] bg-ue-accent"></div>
-                <h2 class="text-3xl font-bold text-white tracking-wide">PUBLISHED ON STEAM</h2>
-                <div class="flex-1 h-[1px] bg-ue-border ml-4"></div>
-            </div>
+  <!-- Toast Notification Element -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
-                <!-- Project: Rejuvan -->
-                <div class="ue-panel project-card rounded-md p-1 flex flex-col reveal">
-                    <div class="bg-ue-darkest w-full h-56 rounded-t-sm relative overflow-hidden group">
-                        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2814370/header.jpg" alt="Rejuvan Header" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-ue-darkest via-transparent to-transparent opacity-90"></div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col relative z-10 -mt-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 drop-shadow-md">Rejuvan</h3>
-                        <p class="text-gray-400 text-sm mb-6 flex-1">Build, make money, create, repeat. A first-person factory game about making the most efficient factories on your own little island.</p>
-                        <a href="https://store.steampowered.com/app/2814370/Rejuvan/" target="_blank" class="steam-btn border border-gray-600 text-gray-300 py-3 px-4 rounded-sm font-semibold flex items-center justify-center gap-3 transition-all">
-                            <i class="fa-brands fa-steam text-xl"></i>
-                            View on Steam
-                        </a>
-                    </div>
-                </div>
+  <!-- Scripts -->
+  <script>
+    // Dynamic current year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-                <!-- Project: The Backwars -->
-                <div class="ue-panel project-card rounded-md p-1 flex flex-col reveal" style="transition-delay: 100ms;">
-                    <div class="bg-ue-darkest w-full h-56 rounded-t-sm relative overflow-hidden group">
-                        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3172470/header.jpg" alt="The Backwars Header" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-ue-darkest via-transparent to-transparent opacity-90"></div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col relative z-10 -mt-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 drop-shadow-md">The Backwars</h3>
-                        <p class="text-gray-400 text-sm mb-6 flex-1">A survival horror game where you gather resources, craft, and hide from lurking terrors in a hauntingly realistic world.</p>
-                        <a href="https://store.steampowered.com/app/3172470/The_Backwars/" target="_blank" class="steam-btn border border-gray-600 text-gray-300 py-3 px-4 rounded-sm font-semibold flex items-center justify-center gap-3 transition-all">
-                            <i class="fa-brands fa-steam text-xl"></i>
-                            View on Steam
-                        </a>
-                    </div>
-                </div>
+    // Interactive Cursor Spotlight
+    const spotlight = document.getElementById('spotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlight.style.left = `${e.clientX}px`;
+      spotlight.style.top = `${e.clientY}px`;
+    });
 
-                <!-- Project: Wait, is THAT me? -->
-                <div class="ue-panel project-card rounded-md p-1 flex flex-col reveal">
-                    <div class="bg-ue-darkest w-full h-56 rounded-t-sm relative overflow-hidden group">
-                        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4002570/header.jpg" alt="Wait, is THAT me? Header" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-ue-darkest via-transparent to-transparent opacity-90"></div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col relative z-10 -mt-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 drop-shadow-md">Wait, is THAT me?</h3>
-                        <p class="text-gray-400 text-sm mb-6 flex-1">Your past is being looped. Whatever you did or said was recorded and will be reenacted by an exact replica of you.</p>
-                        <a href="https://store.steampowered.com/app/4002570/Wait_is_THAT_me/" target="_blank" class="steam-btn border border-gray-600 text-gray-300 py-3 px-4 rounded-sm font-semibold flex items-center justify-center gap-3 transition-all">
-                            <i class="fa-brands fa-steam text-xl"></i>
-                            View on Steam
-                        </a>
-                    </div>
-                </div>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
 
-                <!-- Project: Down to Floor Zero -->
-                <div class="ue-panel project-card rounded-md p-1 flex flex-col reveal" style="transition-delay: 100ms;">
-                    <div class="bg-ue-darkest w-full h-56 rounded-t-sm relative overflow-hidden group">
-                        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5176520/header.jpg" alt="Down to Floor Zero Header" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-ue-darkest via-transparent to-transparent opacity-90"></div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col relative z-10 -mt-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 drop-shadow-md">Down to Floor Zero</h3>
-                        <p class="text-gray-400 text-sm mb-6 flex-1">A survival horror experience set in an unreasonably large hotel. Your only means of transportation is an elevator that can solely go down.</p>
-                        <a href="https://store.steampowered.com/app/5176520/Down_to_Floor_Zero/" target="_blank" class="steam-btn border border-gray-600 text-gray-300 py-3 px-4 rounded-sm font-semibold flex items-center justify-center gap-3 transition-all">
-                            <i class="fa-brands fa-steam text-xl"></i>
-                            View on Steam
-                        </a>
-                    </div>
-                </div>
+    // Projects Carousel Logic
+    const track = document.getElementById('carouselTrack');
+    const tabs = document.querySelectorAll('.carousel-tab');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progress = document.getElementById('carouselProgress');
+    const totalSlides = 4;
+    let currentIndex = 0;
+    let autoPlayTimer = null;
 
-            </div>
-        </div>
-    </section>
+    function updateCarousel(index) {
+      currentIndex = (index + totalSlides) % totalSlides;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-    <section id="contact" class="py-24 bg-ue-darkest/80 border-t border-ue-border relative backdrop-blur-sm">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="flex items-center justify-center gap-4 mb-16 reveal">
-                <div class="w-12 h-[2px] bg-ue-accent"></div>
-                <h2 class="text-3xl font-bold text-white tracking-wide">CONTACT ME</h2>
-                <div class="w-12 h-[2px] bg-ue-accent"></div>
-            </div>
+      tabs.forEach((tab, idx) => {
+        tab.classList.toggle('active', idx === currentIndex);
+      });
 
-            <div class="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 reveal">
-                <!-- Email Link -->
-                <a href="mailto:papergod.dev@gmail.com" class="group flex flex-col items-center gap-5 hover:-translate-y-2 transition-all duration-300">
-                    <div class="w-20 h-20 rounded-lg bg-ue-panel border border-ue-border flex items-center justify-center group-hover:border-ue-accent group-hover:shadow-[0_0_20px_rgba(0,168,255,0.2)] transition-all duration-300">
-                        <i class="fa-solid fa-envelope text-3xl text-gray-400 group-hover:text-ue-accent transition-colors"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs text-ue-textMuted font-mono mb-1 uppercase tracking-widest">Email Address</div>
-                        <div class="text-white font-semibold text-lg group-hover:text-ue-accent transition-colors">papergod.dev@gmail.com</div>
-                    </div>
-                </a>
+      progress.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+    }
 
-                <!-- Phone Link -->
-                <a href="tel:+40742365153" class="group flex flex-col items-center gap-5 hover:-translate-y-2 transition-all duration-300" style="transition-delay: 100ms;">
-                    <div class="w-20 h-20 rounded-lg bg-ue-panel border border-ue-border flex items-center justify-center group-hover:border-ue-accent group-hover:shadow-[0_0_20px_rgba(0,168,255,0.2)] transition-all duration-300">
-                        <i class="fa-solid fa-phone text-3xl text-gray-400 group-hover:text-ue-accent transition-colors"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs text-ue-textMuted font-mono mb-1 uppercase tracking-widest">Phone Number</div>
-                        <div class="text-white font-semibold text-lg group-hover:text-ue-accent transition-colors">+40 742 365 153</div>
-                    </div>
-                </a>
-            </div>
+    prevBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex - 1);
+      resetAutoPlay();
+    });
 
-            <!-- Social Links -->
-            <div class="mt-20 pt-10 border-t border-ue-border/50 reveal" style="transition-delay: 200ms;">
-                <h3 class="text-sm text-ue-textMuted font-mono mb-8 uppercase tracking-widest">Social Networks</h3>
-                <div class="flex justify-center gap-6">
-                    <a href="https://www.instagram.com/papergoddev" target="_blank" class="w-14 h-14 rounded-md bg-ue-panel border border-ue-border flex items-center justify-center text-gray-400 hover:text-ue-darkest hover:bg-ue-accent hover:border-ue-accent transition-all hover:scale-110 hover:-translate-y-1 shadow-lg">
-                        <i class="fa-brands fa-instagram text-2xl"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@papergoddev" target="_blank" class="w-14 h-14 rounded-md bg-ue-panel border border-ue-border flex items-center justify-center text-gray-400 hover:text-ue-darkest hover:bg-ue-accent hover:border-ue-accent transition-all hover:scale-110 hover:-translate-y-1 shadow-lg">
-                        <i class="fa-brands fa-youtube text-2xl"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@papergoddev" target="_blank" class="w-14 h-14 rounded-md bg-ue-panel border border-ue-border flex items-center justify-center text-gray-400 hover:text-ue-darkest hover:bg-ue-accent hover:border-ue-accent transition-all hover:scale-110 hover:-translate-y-1 shadow-lg">
-                        <i class="fa-brands fa-tiktok text-2xl"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    nextBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex + 1);
+      resetAutoPlay();
+    });
 
-    <footer class="bg-ue-darkest border-t border-ue-border py-12 relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center relative z-10">
-            <div class="mb-4 md:mb-0">
-                <span class="font-mono text-ue-accent font-bold">&lt;/&gt;</span>
-                <span class="text-gray-400 text-sm ml-2">Built for high performance.</span>
-            </div>
-            <div class="text-gray-500 text-sm">
-                &copy; <span id="year"></span> Chivu Razvan Gabriel. Game Programmer.
-            </div>
-        </div>
-    </footer>
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        updateCarousel(parseInt(tab.dataset.index, 10));
+        resetAutoPlay();
+      });
+    });
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+    // Keyboard Arrow Navigation for Carousel
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        updateCarousel(currentIndex - 1);
+        resetAutoPlay();
+      } else if (e.key === 'ArrowRight') {
+        updateCarousel(currentIndex + 1);
+        resetAutoPlay();
+      }
+    });
 
-        // Navbar blur effect on scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('py-2');
-                navbar.classList.remove('py-4');
-            } else {
-                navbar.classList.add('py-4');
-                navbar.classList.remove('py-2');
-            }
-        });
+    // Touch / Swipe Support on Mobile
+    let touchStartX = 0;
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
 
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    // Stop observing once revealed
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            root: null,
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        });
+    track.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 45) {
+        updateCarousel(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+        resetAutoPlay();
+      }
+    }, { passive: true });
 
-        revealElements.forEach(el => revealObserver.observe(el));
+    // Auto-advance every 7 seconds unless hovered
+    function startAutoPlay() {
+      autoPlayTimer = setInterval(() => updateCarousel(currentIndex + 1), 7000);
+    }
+    function resetAutoPlay() {
+      clearInterval(autoPlayTimer);
+      startAutoPlay();
+    }
+    const carouselWrapper = document.getElementById('projectCarousel');
+    carouselWrapper.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
+    carouselWrapper.addEventListener('mouseleave', startAutoPlay);
+    startAutoPlay();
 
-        const canvas = document.getElementById('blueprint-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let nodes = [];
-        
-        // Configuration to match Unreal Blueprint look
-        const config = {
-            nodeCount: window.innerWidth < 768 ? 40 : 80,
-            maxDistance: 150,
-            nodeColor: 'rgba(255, 255, 255, 0.1)',
-            lineColor: 'rgba(0, 168, 255, 0.15)' // UE Blue
-        };
+    // Copy to Clipboard with Toast Notification
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+    function copyText(value, message) {
+      navigator.clipboard.writeText(value).then(() => {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => toast.classList.remove('show'), 2600);
+      });
+    }
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+    // Scroll Reveal Observer
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
         }
+      });
+    }, { threshold: 0.12 });
 
-        window.addEventListener('resize', () => {
-            resize();
-            initNodes();
-        });
-
-        class Node {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 1.5 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Bounce off edges
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = config.nodeColor;
-                ctx.fill();
-            }
-        }
-
-        function initNodes() {
-            nodes = [];
-            for (let i = 0; i < config.nodeCount; i++) {
-                nodes.push(new Node());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw connections
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < config.maxDistance) {
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        
-                        // Opacity based on distance
-                        const opacity = 1 - (distance / config.maxDistance);
-                        // Using the UE blue with dynamic opacity
-                        ctx.strokeStyle = `rgba(0, 168, 255, ${opacity * 0.25})`; 
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            // Update and draw nodes
-            nodes.forEach(node => {
-                node.update();
-                node.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        // Initialize Canvas Simulation
-        resize();
-        initNodes();
-        animate();
-        
-    </script>
+    revealElements.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
